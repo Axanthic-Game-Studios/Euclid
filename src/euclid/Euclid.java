@@ -14,14 +14,12 @@ import javax.swing.SwingUtilities;
 /**
  * Euclid - builds block outlines for every variant of a blockstate JSON (assets/<modid>/blockstates/*.json).
  *
- * Start:  java -jar Euclid.jar
+ * Start:  java -jar Euclid-<VERSION>.jar
  *
- * Build (no dependencies):
- *   javac --release 25 -d out $(find src -name "*.java")   (then copy the fonts/ folder next to the classes into the jar)
- *   jar --create --file Euclid.jar --main-class euclid.Euclid -C out .
+ * Build (no dependencies): ./build.sh, writes Euclid-<VERSION>.jar
  */
 public final class Euclid {
-	static final String VERSION = "0.24.0";
+	public static final String VERSION = "0.24.1";
 
 	static void showError(Throwable t) {
 		StringWriter sw = new StringWriter();

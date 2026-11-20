@@ -1,5 +1,6 @@
 package euclid.gui;
 
+import euclid.Euclid;
 import euclid.io.AssetPaths;
 import euclid.io.Prefs;
 import euclid.io.TextFiles;
@@ -62,7 +63,7 @@ import javax.swing.UIManager;
 public final class App {
 	public static void run() {
 		try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } catch (Exception ignored) { }   // standard dialogs (the unsaved-changes question) get the look of the operating system
-		JFrame frame = new JFrame("Euclid");
+		JFrame frame = new JFrame("Euclid " + Euclid.VERSION);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);   // closing asks first when there are unexported changes
 		frame.setIconImages(Icons.appIcons());
 		ToolTipManager.sharedInstance().setInitialDelay(300);

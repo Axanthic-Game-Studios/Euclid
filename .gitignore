@@ -30,7 +30,7 @@ bin/
 .DS_Store
 
 ### Build ###
-/Euclid.jar
+/Euclid*.jar
 
 ### IntelliJ IDEA (personal) ###
 .idea/workspace.xml
