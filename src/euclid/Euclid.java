@@ -19,7 +19,7 @@ import javax.swing.SwingUtilities;
  * Build (no dependencies): ./build.sh, writes Euclid-<VERSION>.jar
  */
 public final class Euclid {
-	public static final String VERSION = "0.24.1";
+	public static final String VERSION = "0.24.2";
 
 	static void showError(Throwable t) {
 		StringWriter sw = new StringWriter();

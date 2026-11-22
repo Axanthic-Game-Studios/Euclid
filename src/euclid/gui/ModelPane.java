@@ -25,6 +25,7 @@ final class ModelPane extends JComponent {
 		setLayout(null);
 		setOpaque(false);
 		area.setEditable(false);
+		area.setDropTarget(null);   // dropped files fall through to this pane's handler (the window's file drop) instead of the text area's own
 		area.setLineWrap(false);   // code lines stay whole; long ones scroll sideways
 		area.setOpaque(false);
 		area.setBorder(BorderFactory.createEmptyBorder(INSET, INSET, INSET, INSET));   // 15 px around the text; scrolled text runs to the edge of the panel
