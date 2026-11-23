@@ -1,6 +1,7 @@
 package euclid.gui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -39,6 +40,7 @@ final class VariantList extends JComponent {
 	private int dragOff = -1;
 	private int hoverItem = -1;    // entry under the mouse
 	private final HoverFade fade = new HoverFade(this::repaint);
+	private int mouseX = -1;
 	private int mouseY = -1;
 	private final List<Runnable> selListeners = new ArrayList<>();
 
@@ -48,9 +50,8 @@ final class VariantList extends JComponent {
 		MouseAdapter m = new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				requestFocusInWindow();
-				Rectangle t = thumb();
-				if (t != null && e.getX() >= getWidth() - 25 && e.getX() <= getWidth() - 10 && e.getY() >= t.y && e.getY() <= t.y + t.height) {
-					dragOff = e.getY() - t.y;
+				if (onThumb(e.getX(), e.getY())) {
+					dragOff = e.getY() - thumb().y;
 					return;
 				}
 				int i = itemAt(e.getY());
@@ -64,8 +65,8 @@ final class VariantList extends JComponent {
 				if (track > 0) setScroll((int) ((long) (e.getY() - dragOff - 15) * max / track));
 			}
 			@Override public void mouseReleased(MouseEvent e) { dragOff = -1; }
-			@Override public void mouseMoved(MouseEvent e) { mouseY = e.getY(); updateHover(); }
-			@Override public void mouseExited(MouseEvent e) { mouseY = -1; updateHover(); }
+			@Override public void mouseMoved(MouseEvent e) { mouseX = e.getX(); mouseY = e.getY(); updateHover(); }
+			@Override public void mouseExited(MouseEvent e) { mouseX = -1; mouseY = -1; updateHover(); }
 			@Override public void mouseWheelMoved(MouseWheelEvent e) { setScroll(scrollY + e.getWheelRotation() * ROW); }
 		};
 		addMouseListener(m);
@@ -156,6 +157,12 @@ final class VariantList extends JComponent {
 	private void updateHover() {
 		int h = mouseY < 0 ? -1 : itemAt(mouseY);
 		if (h != hoverItem) { hoverItem = h; fade.set(h); repaint(); }
+		setCursor(h >= 0 && !onThumb(mouseX, mouseY) ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : Cursor.getDefaultCursor());
+	}
+
+	private boolean onThumb(int px, int py) {
+		Rectangle t = thumb();
+		return t != null && px >= getWidth() - 25 && px <= getWidth() - 10 && py >= t.y && py <= t.y + t.height;
 	}
 
 	private Rectangle thumb() {
