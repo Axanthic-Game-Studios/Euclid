@@ -1,0 +1,42 @@
+package com.axanthic.euclid;
+
+import com.axanthic.euclid.gui.App;
+import com.axanthic.euclid.gui.Theme;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+
+/**
+ * Euclid - builds block outlines for every variant of a blockstate JSON (assets/<modid>/blockstates/*.json).
+ *
+ * Start:  java -jar Euclid-<VERSION>.jar
+ *
+ * Build (no dependencies): ./gradlew jar, writes build/libs/Euclid-<VERSION>.jar
+ */
+public final class Euclid {
+	static void showError(Throwable t) {
+		StringWriter sw = new StringWriter();
+		t.printStackTrace(new PrintWriter(sw));
+		t.printStackTrace();
+		try {
+			JTextArea area = new JTextArea(sw.toString(), 16, 70);
+			area.setEditable(false);
+			JOptionPane.showMessageDialog(null, new JScrollPane(area), "Euclid - error", JOptionPane.ERROR_MESSAGE);
+		} catch (Throwable ignored) { }
+	}
+
+	public static void main(String[] args) {
+		Thread.setDefaultUncaughtExceptionHandler((th, e) -> showError(e));
+		try {
+			Theme.loadFonts();
+			SwingUtilities.invokeLater(App::run);
+		} catch (Throwable t) {
+			showError(t);
+		}
+	}
+}
