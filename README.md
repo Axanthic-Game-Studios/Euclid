@@ -2,8 +2,6 @@
 
 3D inspector and converter, importing Minecraft Java Edition block models and states, exporting voxel shapes and data code. No dependencies required besides a minimum of Java 25.
 
-<img width="256" height="94" alt="Logo" src="logo.png"/>
-
 ### Import
 
 Euclid supports both a single block model or block state. If the file is inside an `assets` folder, Euclid resolves every referenced parent or model within the imported file, as long as the referenced files are saved in the expected locations following Minecraft's asset structure. With this, a block state brings in every model of its variants, each one rotated by the variant's `x` and `y` rotation. Variants with several weighted models list each model on its own. Multipart block states are not supported yet.
