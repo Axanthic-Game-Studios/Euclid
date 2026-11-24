@@ -2,7 +2,7 @@
 
 3D inspector and converter, importing Minecraft Java Edition block models and states, exporting voxel shapes and data code. No dependencies required besides a minimum of Java 25.
 
-<img width="300" height="109" alt="Logo" src="https://github.com/user-attachments/assets/9e71566c-b1d7-487a-88e8-1a369f10df88"/>
+<img width="256" height="94" alt="Logo" src="logo.png"/>
 
 ### Import
 
