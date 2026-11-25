@@ -4,7 +4,7 @@
 
 ### Import
 
-Euclid supports both a single block model or block state. If the file is inside an `assets` folder, Euclid resolves every referenced parent or model within the imported file, as long as the referenced files are saved in the expected locations following Minecraft's asset structure. With this, a block state brings in every model of its variants, each one rotated by the variant's `x` and `y` rotation. Variants with several weighted models list each model on its own. Multipart block states are not supported yet.
+Euclid supports either a single block model or block state. If the file is inside an `assets` folder, Euclid resolves every referenced parent or model within the imported file, as long as the referenced files are saved in the expected locations following Minecraft's asset structure. With this, a block state brings in every model of its variants, each one rotated by the variant's `x` and `y` rotation. Variants with several weighted models list each model on its own. Multipart block states are not supported yet.
 
 ### Mode
 
@@ -50,7 +50,7 @@ In **Voxel Shape** mode, Euclid covers the selected model with boxes. Straight e
 public static final VoxelShape VOXEL_SHAPE = Stream.of(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)).reduce((a, b) -> Shapes.join(a, b, BooleanOp.OR)).get();
 ```
 
-In **Model** mode, Euclid turns the model into data code using NeoForge's `ExtendedModelTemplateBuilder`. Each model is only written once, no matter how many variants use it. The `parent` Identifier and the `texture` TextureSlotLocation can be set in the settings.
+In **Model** mode, Euclid turns the model into data code using NeoForge's `ExtendedModelTemplateBuilder`. Each model is only written once, no matter how many variants use it. The `parent` identifier and the `texture` texture slot location can be set in the settings.
 
 ``` JAVA
 public static ExtendedModelTemplate model() {
@@ -80,6 +80,6 @@ The model panel right of the viewport shows every model of the file, grouped by 
 
 ### Settings
 
-The settings tab is home for hotkey, viewer and output settings. Settings are saved across sessions.
+Euclid's settings allow adjustments to hotkeys, data and code output, viewer behavior and multi-block compatibility. The first three are rather self-explanatory while the latter one enables a customizable compatibility for multi-block support. A multi-block is defined by at least one block state property that splits said block into at least two parts along either its `depth`, `height` or `width`. Euclid supports three parts per axis at most. Every possible combination in between is supported. Properties and values for two block deep, high or wide multi-blocks are set within the **Pair Settings** section, properties and values for three block deep, high or wide multi-blocks are set within the **Span Settings** section. The depth and height pairs are pre-defined with the vanilla multi-block properties `part` with `foot` and `head` as well as `half` with `lower` and `upper`. All settings are saved across sessions.
 
-<img width="2560" height="1440" alt="Settings" src="https://github.com/user-attachments/assets/22c53901-9b7e-436c-a759-92be0bde8b79"/>
+<img width="2560" height="1440" alt="Settings" src="https://github.com/user-attachments/assets/c2ce8f8d-0689-4b7c-9694-d347e07e67aa"/>

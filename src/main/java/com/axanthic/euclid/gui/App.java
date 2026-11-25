@@ -165,11 +165,12 @@ public final class App {
 		Runnable toggleSettings = () -> { settingsOpen[0] = !settingsOpen[0]; root.showSettings(settingsOpen[0]); };
 		root.settingsB.onClick(toggleSettings);
 		root.closeB.onClick(() -> { if (settingsOpen[0]) toggleSettings.run(); });
-		// Tab (fixed, not configurable) cycles the mode: Lines -> Voxel Shape -> Model -> Lines (Tab is a focus key, so it is caught globally)
+		// Tab (fixed, not configurable) cycles the mode: Lines -> Voxel Shape -> Model -> Lines, Shift + Tab the other way (Tab is a focus key, so it is caught globally)
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-			if (e.getID() != KeyEvent.KEY_PRESSED || e.getKeyCode() != KeyEvent.VK_TAB || e.getModifiersEx() != 0) return false;
+			if (e.getID() != KeyEvent.KEY_PRESSED || e.getKeyCode() != KeyEvent.VK_TAB) return false;
+			if (e.getModifiersEx() != 0 && e.getModifiersEx() != KeyEvent.SHIFT_DOWN_MASK) return false;
 			if (!frame.isActive() || settingsOpen[0]) return false;
-			root.setMode((root.mode + 1) % 3);
+			root.setMode((root.mode + (e.isShiftDown() ? 2 : 1)) % 3);
 			return true;
 		});
 		root.settings.onOutputChanged = () -> refreshBoxes.run();   // the Output settings change the Model code
@@ -404,7 +405,7 @@ public final class App {
 		root.setPreferredSize(new Dimension(1100, 700));
 		frame.pack();
 		Insets in = frame.getInsets();   // the window border counts into the minimum size, otherwise the content gets narrower than intended
-		frame.setMinimumSize(new Dimension(75 + 420 + Theme.GAP + 420 + Theme.GAP + in.left + in.right, 705 + in.top + in.bottom));   // viewer and sidebar / settings at their minimum widths
+		frame.setMinimumSize(new Dimension(75 + 420 + Theme.GAP + 420 + Theme.GAP + in.left + in.right, 645 + in.top + in.bottom));   // viewer and sidebar / settings at their minimum widths; the hotkey page ends at 630
 		restoreWindow(frame);
 
 		// remember window position/size (the normal, non-maximized bounds) and the maximized state

@@ -1,18 +1,13 @@
 package com.axanthic.euclid.load;
 
-import java.io.IOException;
-import java.util.Arrays;
-
 /**
  * One model of a blockstate key together with its multiblock position.
- * Parts are told apart by width_* / height_* / depth_* properties, the suffix (pair, span, ...) does not matter.
+ * Parts are told apart by the position properties and values of the multiblock settings.
  * Layout in the frame of facing=north (front = north = -Z, left = east = +X, top = +Y):
  * X: right 0, center 1, left 2     Y: bottom 0, center 1, top 2     Z: front 0, center 1, back 2
+ * A pair has no center, its second value is cell 1.
  */
 final class Part {
-	static final java.util.regex.Pattern POS_PROP = java.util.regex.Pattern.compile("(width|height|depth)_[a-z0-9]+");
-	static final String[][] POS_VALUES = {{"right", "center", "left"}, {"bottom", "center", "top"}, {"front", "center", "back"}};
-
 	String key, ref, group = "";
 	String rowKey;       // key + "\0" + index of the model within the key
 	int idx, weight;
@@ -21,24 +16,28 @@ final class Part {
 	String[] prop = new String[3]; // name of the position property per axis
 	boolean multi;
 
-	static void classify(Part p) throws IOException {
-		StringBuilder rest = new StringBuilder();
-		for (String kv : p.key.split(",")) {
-			int eq = kv.indexOf('=');
-			String name = eq < 0 ? kv : kv.substring(0, eq), val = eq < 0 ? "" : kv.substring(eq + 1);
-			java.util.regex.Matcher mt = POS_PROP.matcher(name);
-			if (eq >= 0 && mt.matches()) {
-				int axis = mt.group(1).equals("width") ? 0 : mt.group(1).equals("height") ? 1 : 2;
-				int idx = Arrays.asList(POS_VALUES[axis]).indexOf(val);
-				if (idx < 0) throw new IOException("Unknown value " + val + " for property " + name);
-				p.cell[axis] = idx;
-				p.prop[axis] = name;
-				p.multi = true;
+	/**
+	 * Takes the position properties of the multiblock settings out of the key and sets the cells.
+	 * A value that is not defined for its axis keeps the property as a normal one.
+	 */
+	static void classify(Part pPart, Multiblock pMultiblock) {
+		var rest = new StringBuilder();
+		for (var kv : pPart.key.split(",")) {
+			var eq = kv.indexOf('=');
+			var name = eq < 0 ? kv : kv.substring(0, eq);
+			var axis = eq < 0 ? -1 : pMultiblock.axis(name);
+			var cell = axis < 0 ? -1 : pMultiblock.cell(name, kv.substring(eq + 1));
+			if (cell >= 0) {
+				pPart.cell[axis] = cell;
+				pPart.prop[axis] = name;
+				pPart.multi = true;
 			} else {
-				if (rest.length() > 0) rest.append(',');
+				if (rest.length() > 0) {
+					rest.append(',');
+				}
 				rest.append(kv);
 			}
 		}
-		p.group = rest.toString();
+		pPart.group = rest.toString();
 	}
 }

@@ -22,16 +22,21 @@ import java.util.Set;
  */
 public final class ModelCode {
 	static final String[] FACE_ORDER = {"north", "east", "south", "west", "up", "down"};
-	static final String PARENT_BASE = "Identifier.withDefaultNamespace(\"block/block\")";   // base value of the parent identifier (no base value for the texture slot location)
+	public static final String PARENT_BASE = "Identifier.withDefaultNamespace(\"block/block\")";   // base value of the parent identifier
 
-	/** The code settings (Output settings): {parent identifier expression, location in front of the texture slot names}. A custom value replaces
-	 *  the base value; an empty one means "use the base value". */
+	/**
+	 * Base value of the texture slot location, the vanilla class with the texture slot constants.
+	 * Every texture slot of a model is written as a constant of this class unless the setting is changed.
+	 */
+	public static final String TEXTURE_SLOT_BASE = "TextureSlot";
+
+	/** The code settings (Output settings): {parent identifier expression, location in front of the texture slot names}. A saved value replaces
+	 *  the base value; the settings never save an empty value. */
 	public static String[] codeCfg() {
-		String[] c = {PARENT_BASE, ""};
+		String[] c = {PARENT_BASE, TEXTURE_SLOT_BASE};
 		try {
-			String p = Prefs.PREFS.get("codeParent", "").trim(), l = Prefs.PREFS.get("codeTexClass", "").trim();
-			if (!p.isEmpty()) c[0] = p;
-			c[1] = l;
+			c[0] = Prefs.PREFS.get("codeParent", PARENT_BASE).trim();
+			c[1] = Prefs.PREFS.get("codeTexClass", TEXTURE_SLOT_BASE).trim();
 		} catch (Exception ignored) { }
 		return c;
 	}

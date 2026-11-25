@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -125,6 +126,11 @@ public final class Blockstates {
 		Map<String, List<double[][]>> solidCache = new HashMap<>();   // for the boxes: corners per model (kept apart from cornerCache, which counts the models)
 		Map<String, List<double[][]>> solids = new LinkedHashMap<>();
 
+		var pairs = new HashSet<String>();
+		for (var key : variants.keySet()) {
+			pairs.addAll(Arrays.asList(normKey(key).split(",")));
+		}
+		var multiblock = Multiblock.load().usedBy(pairs);
 		List<Part> parts = new ArrayList<>();
 		Map<String, Row> rows = new LinkedHashMap<>();
 		for (Map.Entry<String, Object> e : variants.entrySet()) {
@@ -139,7 +145,7 @@ public final class Blockstates {
 				p.x = var.get("x") instanceof Number ? (int) Json.num(var.get("x")) : 0;
 				p.y = var.get("y") instanceof Number ? (int) Json.num(var.get("y")) : 0;
 				p.weight = var.get("weight") instanceof Number ? Math.max(1, (int) Json.num(var.get("weight"))) : 0;   // 0 = not given
-				Part.classify(p);
+				Part.classify(p, multiblock);
 				mine.add(p);
 			}
 			for (int i = 0; i < mine.size(); i++) {
@@ -150,13 +156,6 @@ public final class Blockstates {
 				parts.add(p);
 			}
 		}
-
-		// a property without any "center" value is a pair: its second value is cell 1, not 2
-		Set<String> withCenter = new HashSet<>();
-		for (Part p : parts)
-			for (int a = 0; a < 3; a++) if (p.prop[a] != null && p.cell[a] == 1) withCenter.add(p.prop[a]);
-		for (Part p : parts)
-			for (int a = 0; a < 3; a++) if (p.prop[a] != null && p.cell[a] == 2 && !withCenter.contains(p.prop[a])) p.cell[a] = 1;
 
 		Map<String, List<Part>> groups = new HashMap<>();
 		for (Part p : parts) if (p.multi) groups.computeIfAbsent(p.group + "|" + p.x + "|" + p.y, k -> new ArrayList<>()).add(p);
