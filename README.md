@@ -10,11 +10,11 @@ Euclid supports either a single block model or block state. If the file is insid
 
 Switch between the three modes **Lines**, **Voxel Shape** and **Model**. The viewport, model panel and output follow the current selection.
 
-<img width="2560" height="1440" alt="Mode" src="https://github.com/user-attachments/assets/0be8dfcd-47ad-46b4-baa7-57d9da7582ce"/>
+![Mode](https://github.com/user-attachments/assets/0be8dfcd-47ad-46b4-baa7-57d9da7582ce)
 
 In **Lines** mode, Euclid draws the outline of the selected model. All elements are merged into one body, dropping edges hidden inside it and seams between flush faces, while lines on the same edge are joined into one. Hovering over unwanted lines marks them red, clicking then removes them. Undo brings back removed lines and redo removes them again.
 
-<img width="2560" height="1440" alt="Edit" src="https://github.com/user-attachments/assets/79306a8d-5ab0-4448-b5fa-463d65d0ea74"/>
+![Edit](https://github.com/user-attachments/assets/79306a8d-5ab0-4448-b5fa-463d65d0ea74)
 
 The export contains the lines of every variant. Each key is a comma separated list of `property=value`, an empty key works as catch-all fallback. Each entry is a weighted model, where `weight` is at least `1`. Each outline is one line segment `[x1, y1, z1, x2, y2, z2]`. The output is meant to be read by a `SimpleJsonResourceReloadListener` and drawn on `ExtractBlockOutlineRenderStateEvent`.
 
@@ -70,16 +70,16 @@ public static ExtendedModelTemplate model() {
 
 The viewport changes based on mode. **Lines** and **Voxel Shape** display the selected model as its 3D representation. Rotate the view with the left mouse button, move it with the right mouse button and zoom with the mouse wheel. Preferences can be set in the settings. **Model** displays the selected model as its data code representation.
 
-<img width="2560" height="1440" alt="Viewport" src="https://github.com/user-attachments/assets/bf548fa6-de46-4bec-a357-10e817260428"/>
+![Viewport](https://github.com/user-attachments/assets/bf548fa6-de46-4bec-a357-10e817260428)
 
 ### Variants
 
 The model panel right of the viewport shows every model of the file, grouped by block state condition. The selected model is shown in the viewport.
 
-<img width="2560" height="1440" alt="Variants" src="https://github.com/user-attachments/assets/f1d13c85-6db0-4cbc-9ec1-919f373443cd"/>
+![Variants](https://github.com/user-attachments/assets/f1d13c85-6db0-4cbc-9ec1-919f373443cd)
 
 ### Settings
 
 Euclid's settings allow adjustments to hotkeys, data and code output, viewer behavior and multi-block compatibility. The first three are rather self-explanatory while the latter one enables a customizable compatibility for multi-block support. A multi-block is defined by at least one block state property that splits said block into at least two parts along either its `depth`, `height` or `width`. Euclid supports three parts per axis at most. Every possible combination in between is supported. Properties and values for two block deep, high or wide multi-blocks are set within the **Pair Settings** section, properties and values for three block deep, high or wide multi-blocks are set within the **Span Settings** section. The depth and height pairs are pre-defined with the vanilla multi-block properties `part` with `foot` and `head` as well as `half` with `lower` and `upper`. All settings are saved across sessions.
 
-<img width="2560" height="1440" alt="Settings" src="https://github.com/user-attachments/assets/c2ce8f8d-0689-4b7c-9694-d347e07e67aa"/>
+![Settings](https://github.com/user-attachments/assets/c2ce8f8d-0689-4b7c-9694-d347e07e67aa)
