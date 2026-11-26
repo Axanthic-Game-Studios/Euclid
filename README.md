@@ -1,4 +1,4 @@
-# Euclid
+![Logo](https://github.com/user-attachments/assets/20f66dae-e42b-413a-8bee-fb59376619f7)
 
 3D inspector and converter, importing Minecraft Java Edition block models and states, exporting voxel shapes and data code. No dependencies required besides a minimum of Java 25.
 
